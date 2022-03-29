@@ -18,9 +18,9 @@ class student: public user{
 
     public:
         student(int user_id, string username, string password, string name, book_database &books);
-        int calculate_fine();
+        int calculate_fine(int curr_date);
         // bool issue_book(string title, string author);
-        bool return_book(string title, string author);
+        bool return_book(string title, string author, int curr_date);
         bool setlle_fine();
         
 

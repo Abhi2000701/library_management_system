@@ -10,13 +10,16 @@ using namespace std;
 
 
 class user_database{
-    protected:
+    public:
         vector<struct USER>  users;
         int num_users;
 
-    public:
+        // default constructor
+        user_database();
+
+        
         user_database(string user_txt_file);
-        ~user_database();
+        // ~user_database();
         
         void add_user(string name, string password, string username);
         
@@ -26,7 +29,7 @@ class user_database{
         void update_user(int user_id, int field_to_update, string new_value);
         
         // search user by name.
-        struct USER search_user(string name);
+        vector<struct USER> search_user(string name);
         
 };
 

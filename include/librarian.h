@@ -16,6 +16,8 @@ class librarian:public user{
     public:
         user_database all_users;
 
+        librarian();
+
         librarian(user_database &users, book_database &books, int user_id);
         
         void add_user(string name, string password, string username);
@@ -33,6 +35,8 @@ class librarian:public user{
 
         // field = (0,1)=(title, author)
         void update_book(int book_id, int field_to_update, string new_value);
+
+        void issue_book(vector<int> book_ids, vector<int> student_ids, vector<int> dates);
 
 };
 

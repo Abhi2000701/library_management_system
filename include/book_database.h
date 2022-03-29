@@ -14,14 +14,21 @@ class book_database{
         vector<book> books;
         int num_books;
 
+        // default constructor
+        book_database();
+        // copy constructor
+        book_database(book_database &books);
+
         book_database(string book_txt_file);
-        ~book_database();
+        // ~book_database();
 
         void add_book(string title, string author);
         void delete_book(int book_id);
 
         // field = (0,1)=(title, author)
         void update_book(int book_id, int field_to_update, string new_value);
+
+        void issue_book(int book_id, int student_id, int date);
 
 };
 

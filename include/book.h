@@ -9,7 +9,7 @@ using namespace std;
 
 
 class book{
-    protected:
+    public:
         int book_id;
         string title;
         string author;
@@ -17,13 +17,13 @@ class book{
         int issued_to;
         int last_issue_date;
         
+        // default constructor
+        book();
 
-        book(const vector<struct BOOK>& books, int book_id);
-
-    public:
+        book(int book_id, string title, string author, int issued_to, int last_issue_date);
         
-        int due_date();
-        // struct BOOK get_book_details();
+        int due_date(int label_issuer);
+        
         bool is_available();
 };
 

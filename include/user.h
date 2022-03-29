@@ -17,19 +17,29 @@ struct USER{
     // label = 0 for librarian, label = 1 for student, label = 2 for professor
 };
 
+typedef struct Book_Detail{
+    int book_id;
+    string title;
+    string author;
+}book_detail;
+
 class user{
-    private:
-        int _get_book_id(string title, string author);
     protected:
+        int _get_book_id(string title, string author);
+
         struct USER user_details;
         book_database all_books;
-        // user(int user_id, string username, string password, string name);
+        // user(int user_id, string username, string password, string name,int label, book_database &books);
 
     public:
+        // default constructor
+        user();
+
         vector<book> search_book_by_title(string title);
         vector<book> search_book_by_author(string author);
+        
         // list book
-        vector<book> list_books();
+        vector<book_detail> list_all_books();
         bool is_available(string title, string author);
         int due_date(string title, string author);
     

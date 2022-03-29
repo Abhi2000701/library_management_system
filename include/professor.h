@@ -18,10 +18,10 @@ class professor: public user{
 
     public:
         professor(int user_id, string username, string password, string name, book_database &books);
-        int calculate_fine();
+        int calculate_fine(int curr_date);
         // bool issue_book(string title, string author);
-        bool return_book(string title, string author);
-        bool setlle_fine();
+        bool return_book(string title, string author,int curr_date);
+        bool setlle_fine(); 
         
 
 };
