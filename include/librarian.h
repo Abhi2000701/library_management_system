@@ -1,7 +1,7 @@
 #ifndef LIBRARIAN_H
 #define LIBRARIAN_H
 
-#include<stdio.h>
+#include<iostream>
 #include<string>
 #include<vector>
 
@@ -20,14 +20,14 @@ class librarian:public user{
 
         librarian(user_database &users, book_database &books, int user_id);
         
-        void add_user(string name, string password, string username);
+        void add_user(string name, string password, string username,int label);
         
         void delete_user(int user_id);
         
         // field = (0,1,2)=(username,password,name
         void update_user(int id, int field_to_update, string new_value);
         
-        vector<struct USER> list_users();
+        vector<user> list_users();
 
         void add_book(string title, string author);
 

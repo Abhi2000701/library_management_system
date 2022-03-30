@@ -1,7 +1,7 @@
 #ifndef BOOK_H
 #define BOOK_H
 
-#include<stdio.h>
+#include<iostream>
 #include<string>
 #include<vector>
 
@@ -25,6 +25,8 @@ class book{
         int due_date(int label_issuer);
         
         bool is_available();
+
+        void print_details();
 };
 
 #endif

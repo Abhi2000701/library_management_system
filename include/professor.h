@@ -1,7 +1,7 @@
 #ifndef PROFESSOR_H
 #define PROFESSOR_H
 
-#include<stdio.h>
+#include<iostream>
 #include<string>
 #include<vector>
 

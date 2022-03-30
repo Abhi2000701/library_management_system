@@ -1,7 +1,7 @@
 #ifndef USER_DATABASE_H
 #define USER_DATABASE_H
 
-#include<stdio.h>
+#include<iostream>
 #include<string>
 #include<vector>
 #include"user.h"
@@ -11,8 +11,9 @@ using namespace std;
 
 class user_database{
     public:
-        vector<struct USER>  users;
+        vector<user>  users;
         int num_users;
+        string file_name;
 
         // default constructor
         user_database();
@@ -21,7 +22,7 @@ class user_database{
         user_database(string user_txt_file);
         // ~user_database();
         
-        void add_user(string name, string password, string username);
+        void add_user(string name, string password, string username,int label);
         
         void delete_user(int user_id);
 
@@ -29,7 +30,10 @@ class user_database{
         void update_user(int user_id, int field_to_update, string new_value);
         
         // search user by name.
-        vector<struct USER> search_user(string name);
+        vector<user> search_user_by_name(string name);
+        user login_user(string username, string password);
+        user search_user_by_id(int user_id);
+        void save_data();
         
 };
 

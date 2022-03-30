@@ -1,7 +1,7 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 
-#include<stdio.h>
+#include<iostream>
 #include<string>
 #include<vector>
 

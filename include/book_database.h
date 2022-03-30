@@ -1,7 +1,7 @@
 #ifndef BOOK_DATABASE_H
 #define BOOK_DATABASE_H
 
-#include<stdio.h>
+#include<iostream>
 #include<string>
 #include<vector>
 
@@ -13,6 +13,7 @@ class book_database{
     public:
         vector<book> books;
         int num_books;
+        string file_name;
 
         // default constructor
         book_database();
@@ -29,6 +30,12 @@ class book_database{
         void update_book(int book_id, int field_to_update, string new_value);
 
         void issue_book(int book_id, int student_id, int date);
+
+        vector<book> search_book_by_title(string title);
+        vector<book> search_book_by_author(string author);
+        book search_book(string title, string author);
+
+        void save_data();
 
 };
 

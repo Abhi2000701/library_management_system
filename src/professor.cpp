@@ -8,17 +8,17 @@ using namespace std;
 
 
 professor::professor(int user_id, string username, string password, string name, book_database &books){
-    this->user_details.user_id = user_id;
-    this->user_details.username = username;
-    this->user_details.password = password;
-    this->user_details.name = name;
-    this->user_details.label = 2;
+    this->user_id = user_id;
+    this->username = username;
+    this->password = password;
+    this->name = name;
+    this->label = 2;
     this->all_books = books;
     this->fine_amount = 0;
 
     // find issued books:
     for (int i = 0; i < this->all_books.books.size(); i++){
-        if (this->all_books.books[i].issued_to == this->user_details.user_id){
+        if (this->all_books.books[i].issued_to == this->user_id){
             this->issued_books.push_back(this->all_books.books[i]);
         }
     }

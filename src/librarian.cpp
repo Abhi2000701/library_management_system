@@ -3,11 +3,11 @@
 using namespace std;
 
 librarian::librarian(){
-    user_details.user_id = 0;
-    user_details.username = "";
-    user_details.password = "";
-    user_details.name = "";
-    user_details.label = -1;
+    user_id = 0;
+    username = "";
+    password = "";
+    name = "";
+    label = -1;
     all_books = book_database();
 }
 
@@ -15,16 +15,16 @@ librarian::librarian(user_database &users, book_database &books, int user_id){
     this->all_users = users;
     this->all_books = books;
 
-    this->user_details.user_id = user_id;
-    this->user_details.label = 0;
-    this->user_details.username = (users.users)[user_id-1].username;
-    this->user_details.password = (users.users)[user_id-1].password;
-    this->user_details.name = (users.users)[user_id-1].name;
+    this->user_id = user_id;
+    this->label = 0;
+    this->username = (users.users)[user_id-1].username;
+    this->password = (users.users)[user_id-1].password;
+    this->name = (users.users)[user_id-1].name;
 
 }
 
-void librarian::add_user(string name, string password, string username){
-    this->all_users.add_user(name, password, username);
+void librarian::add_user(string name, string password, string username,int label){
+    this->all_users.add_user(name, password, username,label);
 }
 
 void librarian::delete_user(int user_id){
@@ -53,6 +53,6 @@ void librarian::issue_book(vector<int> book_ids, vector<int> student_ids, vector
     }
 }
 
-vector<struct USER> librarian::list_users(){
+vector<user> librarian::list_users(){
     return this->all_users.users;
 }
