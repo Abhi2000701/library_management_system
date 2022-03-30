@@ -91,6 +91,6 @@ int add_days_to_date(int date, int days){
         month = month - 12;
         year++;
     }
-    int new_date = year*1000000 + month*10000 + new_day;
+    int new_date = new_day*1000000 + month*10000 + year;
     return new_date;
 }

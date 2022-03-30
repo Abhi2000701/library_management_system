@@ -1,13 +1,10 @@
-#include"../include/professor.h"
+#include"../include/prof_student.h"
 #include"../include/helper_functions.h"
 
 using namespace std;
 
-#define MAX_DAYS 60
-#define FINE_PER_DAY 10
 
-
-professor::professor(int user_id, string username, string password, string name, book_database &books){
+prof_student::prof_student(int user_id, string username, string password, string name, book_database &books,int max_days, int fine_per_day,int label){
     this->user_id = user_id;
     this->username = username;
     this->password = password;
@@ -15,6 +12,9 @@ professor::professor(int user_id, string username, string password, string name,
     this->label = 2;
     this->all_books = books;
     this->fine_amount = 0;
+    this->max_days = max_days;
+    this->fine_per_day = fine_per_day;
+    this->label = label;
 
     // find issued books:
     for (int i = 0; i < this->all_books.books.size(); i++){
@@ -24,12 +24,12 @@ professor::professor(int user_id, string username, string password, string name,
     }
 }
 
-int professor::calculate_fine(int curr_date){
+int prof_student::calculate_fine(int curr_date){
     int fine_amount = 0;
     
     for (int i = 0; i < this->issued_books.size(); i++){
-        if(num_days(this->issued_books[i].last_issue_date, curr_date) > MAX_DAYS){
-            fine_amount += FINE_PER_DAY*(num_days(this->issued_books[i].last_issue_date, curr_date) - MAX_DAYS);
+        if(num_days(this->issued_books[i].last_issue_date, curr_date) > this->max_days){
+            fine_amount += this->fine_per_day*(num_days(this->issued_books[i].last_issue_date, curr_date) - this->max_days);
         }
     }
 
@@ -37,7 +37,7 @@ int professor::calculate_fine(int curr_date){
     return fine_amount;
 }
 
-bool professor::setlle_fine(){
+bool prof_student::setlle_fine(){
     if (this->fine_amount == 0){
         return false;
     }
@@ -46,14 +46,14 @@ bool professor::setlle_fine(){
     }
 }
 
-bool professor::return_book(string title, string author,int curr_date){
+bool prof_student::return_book(string title, string author,int curr_date){
     for (int i = 0; i < this->issued_books.size(); i++){
         if (this->issued_books[i].title == title && this->issued_books[i].author == author){
             this->issued_books.erase(this->issued_books.begin() + i);
             
             // settle fine
-            if(num_days(this->issued_books[i].last_issue_date, curr_date) > MAX_DAYS){
-                fine_amount -= FINE_PER_DAY*(num_days(this->issued_books[i].last_issue_date, curr_date) - MAX_DAYS);
+            if(num_days(this->issued_books[i].last_issue_date, curr_date) > this->max_days){
+                fine_amount -= this->fine_per_day*(num_days(this->issued_books[i].last_issue_date, curr_date) - this->max_days);
             }
             return true;
 

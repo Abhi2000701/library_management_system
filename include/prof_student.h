@@ -10,14 +10,16 @@
 
 using namespace std;
 
-class professor: public user{
+class prof_student: public user{
     public:
         vector<book> issued_books;
+        int label;
         // int num_books_issued;
         int fine_amount;
-
+        int max_days;
+        int fine_per_day;
     
-        professor(int user_id, string username, string password, string name, book_database &books);
+        prof_student(int user_id, string username, string password, string name, book_database &books, int max_days, int fine_per_day,int label);
         int calculate_fine(int curr_date);
         // bool issue_book(string title, string author);
         bool return_book(string title, string author,int curr_date);
