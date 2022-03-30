@@ -59,11 +59,17 @@ void user_database::add_user(string name, string password, string username,int l
     users.push_back(new_user);
 }
 
-void user_database::delete_user(int user_id){
+void user_database::delete_user(int user_id, book_database &books){
     for(int i=0;i<num_users;i++){
         if(users[i].user_id == user_id){
             users.erase(users.begin()+i);
             num_users--;
+            for(int j=0;j<books.num_books;j++){
+                if(books.books[j].issued_to == user_id){
+                    books.books[j].issued_to = 0;
+                    books.books[j].last_issue_date = 0;
+                }
+            }
             break;
         }
     }

@@ -28,7 +28,7 @@ void librarian::add_user(string name, string password, string username,int label
 }
 
 void librarian::delete_user(int user_id){
-    this->all_users.delete_user(user_id);
+    this->all_users.delete_user(user_id,all_books);
 }
 
 void librarian::update_user(int user_id, int field_to_update, string new_value){

@@ -113,6 +113,16 @@ book book_database::search_book(string title, string author){
     return dummy_book;
 }
 
+book book_database::search_book_by_id(int book_id){
+    for(int i=0;i<num_books;i++){
+        if(books[i].book_id == book_id){
+            return books[i];
+        }
+    }
+    book dummy_book;
+    return dummy_book;
+}
+
 void book_database::save_data(){
     ofstream book_file(file_name);
     for(int i=0;i<num_books;i++){

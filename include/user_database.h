@@ -5,6 +5,7 @@
 #include<string>
 #include<vector>
 #include"user.h"
+#include"book_database.h"
 
 using namespace std;
 
@@ -24,7 +25,7 @@ class user_database{
         
         void add_user(string name, string password, string username,int label);
         
-        void delete_user(int user_id);
+        void delete_user(int user_id, book_database &books);
 
         // field = (0,1,2)=(username,password,name)
         void update_user(int user_id, int field_to_update, string new_value);

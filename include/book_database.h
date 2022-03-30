@@ -34,6 +34,7 @@ class book_database{
         vector<book> search_book_by_title(string title);
         vector<book> search_book_by_author(string author);
         book search_book(string title, string author);
+        book search_book_by_id(int book_id);
 
         void save_data();
 

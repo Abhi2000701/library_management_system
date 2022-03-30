@@ -16,16 +16,90 @@ struct USER{
     string username;
     int label;
 };
-
 void print_help(){
 
 }
 
+
+
+void invalid_dtype(){
+    
+    cout << "ERROR -- You entered an invalid data type."<<endl;
+    cin.clear(); 
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+
+void book_availiabilty(string username,book_database &all_books, user_database &all_users){
+    cout<<username<<"/ >";
+    cout<<"Book ID: ";
+    int book_id;
+    cin>>book_id;
+    if(cin.fail()){
+        invalid_dtype();
+        return;
+    }
+    book book_avail = all_books.search_book_by_id(book_id);
+    if(book_avail.book_id==0){
+        cout<<username<<"/ >";
+        cout<<"Book not found.\n";
+    }
+    else{
+        int user_id_issuer = book_avail.issued_to;
+        user issuer = all_users.search_user_by_id(user_id_issuer);
+        if(book_avail.is_available()){
+            cout<<username<<"/ >";
+            cout<<"Book is available.\n";
+        }
+        else{
+            cout<<username<<"/ >";
+            cout<<"Book is not available.\n";
+            cout<<"Due Date: "<<book_avail.due_date(issuer.label)<<endl;
+        }
+    }
+}
+
+void issue_book(string username,int user_id,book_database &all_books, user_database &all_users,int curr_date){
+    cout<<username<<"/ >";
+    cout<<"Book ID: ";
+    int book_id;
+    cin>>book_id;
+    if(cin.fail()){
+        invalid_dtype();
+    }
+    book book_avail = all_books.search_book_by_id(book_id);
+    if(book_avail.book_id==0){
+        cout<<username<<"/ >";
+        cout<<"Book not found.\n";
+    }
+    else{
+        if(book_avail.is_available()){
+            cout<<username<<"/ >";
+            all_books.issue_book(book_id,user_id,curr_date);
+            cout<<"Book issued.\n";
+        }
+        else{
+            cout<<username<<"/ >";
+            cout<<"Book is not available.\n";
+            cout<<"Due Date: "<<book_avail.due_date(book_avail.issued_to)<<endl;
+        }
+    }
+}
+
 void display_books(vector<book> books){
+    cout<<books.size()<<"books found"<<endl;
     for(int i=0;i<books.size();i++){
         cout<<"BOOK ID: "<<books[i].book_id<<", TITLE: "<<books[i].title<<", AUTHOR: "<<books[i].author<<endl;
     }
 }
+
+void display_users(vector<user> users){
+    cout<<users.size()<<"users found"<<endl;
+    for(int i=0;i<users.size();i++){
+        cout<<"USER ID: "<<users[i].user_id<<", NAME: "<<users[i].name<<", USERNAME: "<<users[i].username<<endl;
+    }
+}
+
 
 int login_state(user_database &all_users){
     string command=".";
@@ -106,22 +180,24 @@ librarian log_in_lib(user_database &all_users, book_database &all_books, vector<
     while(true){
         cout<<user_name<<"/ >";
         cin>>command;
-        if(command=="exit"){
+        if(command=="logout"){
             break;
         }
         else if(command=="help"){
-            cout<<user_name<<"/ >";
+            // cout<<user_name<<"/ >";
             cout<<"help - print this help message"<<endl;
-            cout<<"exit - exit the librarian portal"<<endl;
+            cout<<"logout - exit the librarian portal"<<endl;
             cout<<"add_book - add a new book to the library"<<endl;
             cout<<"delete_book - delete a book from the library"<<endl;
             cout<<"update_book - update a book in the library"<<endl;
             cout<<"search_book_author - search for a book by author name in the library"<<endl;
             cout<<"search_book_title - search for a book by title in the library"<<endl;
+            cout<<"list_books - list all the books in the library"<<endl;
             cout<<"add_user - add a new user to the library"<<endl;
             cout<<"delete_user - delete a user from the library"<<endl;
             cout<<"update_user - update a user in the library"<<endl;
             cout<<"search_user - search for a user in the library"<<endl;
+            cout<<"list_users - list all users registered in the library"<<endl;
         }
         else if(command=="add_book"){
             string title, author;
@@ -138,22 +214,21 @@ librarian log_in_lib(user_database &all_users, book_database &all_books, vector<
         }
         else if(command=="delete_book"){
             cout<<user_name<<"/ >";
-            cout<<"Title of the book: ";
-            string title;
-            cin.ignore();
-            getline(cin,title);
-            cout<<user_name<<"/ >";
-            cout<<"Author of the book: ";
-            string author;
-            cin.ignore();
-            getline(cin,author);
-            libr.delete_book(libr.all_books.search_book(title,author).book_id);
+            int boook_id_del;
+            cout<<"BOOK ID: ";
+            cin>>boook_id_del;
+
+            libr.delete_book(boook_id_del);
         }
         else if(command=="update_book"){
             cout<<user_name<<"/ >";
             cout<<"Book id: ";
             int book_id;
             cin>>book_id;
+            if(cin.fail()){
+                invalid_dtype();
+                continue;
+            }
             cout<<user_name<<"/ >";
             cout<<"Field to update(title/author): ";
             string field;
@@ -183,9 +258,11 @@ librarian log_in_lib(user_database &all_users, book_database &all_books, vector<
             getline(cin,author);
             // cout<<author<<endl;
             vector<book> books = libr.all_books.search_book_by_author(author);
-            cout<<books.size()<<" books found: \n";
             display_books(books);
 
+        }
+        else if(command=="list_books"){
+            display_books(libr.all_books.books);
         }
         else if(command=="search_book_title"){
             cout<<user_name<<"/ >";
@@ -218,7 +295,55 @@ librarian log_in_lib(user_database &all_users, book_database &all_books, vector<
             cout<<"USER ID of the user: ";
             int user_id;
             cin>>user_id;
+            if(cin.fail()){
+                invalid_dtype();
+                continue;
+            }
             libr.delete_user(user_id);
+        }
+        else if(command=="update_user"){
+            cout<<user_name<<"/ >";
+            cout<<"USER ID of the user: ";
+            int user_id;
+            cin>>user_id;
+            if(cin.fail()){
+                invalid_dtype();
+                continue;
+            }
+            cout<<user_name<<"/ >";
+            cout<<"Field to update(name/password/username): ";
+            string field;
+            cin>>field;
+            cout<<user_name<<"/ >";
+            cout<<"New value: ";
+            string new_value;
+            cin.ignore();
+            getline(cin,new_value);
+            if(field=="name"){
+                libr.update_user(user_id,0,new_value);
+            }
+            else if(field=="password"){
+                libr.update_user(user_id,1,new_value);
+            }
+            else if(field=="username"){
+                libr.update_user(user_id,2,new_value);
+            }
+            else{
+                cout<<user_name<<"/ >";
+                cout<<"Invalid field.\n";
+            }
+        }
+        else if(command=="search_user"){
+            cout<<user_name<<"/ >";
+            cout<<"USER  Name: ";
+            string name;
+            cin.ignore();
+            getline(cin,name);
+            vector<user> user = libr.all_users.search_user_by_name(name);
+            display_users(user);
+        }
+        else if(command=="list_users"){
+            display_users(libr.all_users.users);
         }
         else{
             cout<<user_name<<"/ >";
@@ -227,6 +352,135 @@ librarian log_in_lib(user_database &all_users, book_database &all_books, vector<
 
     }
     return libr;
+}
+
+void prof_login_state(int user_id, string username, string password, string name, book_database &all_books,user_database &all_users,int curr_date){
+    professor prof(user_id,username,password,name,all_books);
+    string command;
+    while(true){
+        cout<<username<<"/ >";
+        cin>>command;
+        if(command=="logout"){
+            break;
+        }
+        else if(command=="help"){
+            cout<<"help- show this help message"<<endl;
+            cout<<"logout- exit the program"<<endl;
+            cout<<"list_issued_books- list all the books issued by the you"<<endl;
+            cout<<"list_books- list all the books in the library"<<endl;
+            cout<<"search_book_title- search for a book by title"<<endl;
+            cout<<"search_book_author- search for a book by author"<<endl;
+            cout<<"show_total_fine- show the total fine of the user"<<endl;
+            cout<<"check_book_avail- check if a book is available"<<endl;
+            cout<<"issue_book- issue a book"<<endl;
+
+        }
+
+        else if(command=="list_issued_books"){
+            display_books(prof.issued_books);
+        }
+        else if(command=="list_books"){
+            display_books(all_books.books);
+        }
+        else if(command=="search_book_title"){
+            cout<<username<<"/ >";
+            cout<<"Title of the book: ";
+            string title;
+            cin.ignore();
+            getline(cin,title);
+            vector<book> books = all_books.search_book_by_title(title);
+            display_books(books);
+        }
+        else if(command=="search_book_author"){
+            cout<<username<<"/ >";
+            cout<<"Author of the book: ";
+            string author;
+            cin.ignore();
+            getline(cin,author);
+            vector<book> books = all_books.search_book_by_author(author);
+            display_books(books);
+        }
+        else if(command=="show_total_fine"){
+            prof.calculate_fine(curr_date);
+            cout<<username<<"/ >";
+            cout<<"Total fine: "<<prof.fine_amount<<endl;
+        }
+        else if(command=="check_book_avail"){
+            book_availiabilty(username,all_books,all_users);
+        }
+        else if(command=="issue_book"){
+            issue_book(username,user_id, all_books,all_users,curr_date);
+        }
+
+        else{
+            cout<<username<<"/ >";
+            cout<<"Invalid command.\n";
+        }
+
+
+    }
+}
+
+void student_login_state(int user_id, string username, string password, string name, book_database &all_books,user_database &all_users,int curr_date){
+    student stud(user_id,username,password,name,all_books);
+    string command;
+    while(true){
+        cout<<username<<"/ >";
+        cin>>command;
+        if(command=="logout"){
+            break;
+        }
+        else if(command=="help"){
+            cout<<"help- show this help message"<<endl;
+            cout<<"logout- exit the program"<<endl;
+            cout<<"list_issued_books- list all the books issued by the you"<<endl;
+            cout<<"list_books- list all the books in the library"<<endl;
+            cout<<"search_book_title- search for a book by title"<<endl;
+            cout<<"search_book_author- search for a book by author"<<endl;
+            cout<<"show_total_fine- show the total fine of the user"<<endl;
+            cout<<"issue_book- issue a book"<<endl;
+            cout<<"check_book_avail- check if a book is available"<<endl;
+            cout<<"return_book- return a book"<<endl;
+
+        }
+
+        else if(command=="list_issued_books"){
+            display_books(stud.issued_books);
+        }
+        else if(command=="list_books"){
+            display_books(all_books.books);
+        }
+        else if(command=="search_book_title"){
+            cout<<username<<"/ >";
+            cout<<"Title of the book: ";
+            string title;
+            cin.ignore();
+            getline(cin,title);
+            vector<book> books = all_books.search_book_by_title(title);
+            display_books(books);
+        }
+        else if(command=="search_book_author"){
+            cout<<username<<"/ >";
+            cout<<"Author of the book: ";
+            string author;
+            cin.ignore();
+            getline(cin,author);
+            vector<book> books = all_books.search_book_by_author(author);
+            display_books(books);
+        }
+        else if(command=="show_total_fine"){
+            stud.calculate_fine(curr_date);
+            cout<<username<<"/ >";
+            cout<<"Total fine: "<<stud.fine_amount<<endl;
+        }
+
+        else if(command=="check_book_avail"){
+            book_availiabilty(username,all_books,all_users);
+        }
+        else if(command=="issue_book"){
+            issue_book(username,user_id, all_books,all_users,curr_date);
+        }
+    }
 }
 
 struct USER register_new(){
@@ -330,10 +584,16 @@ int main(){
                 librarian lib = log_in_lib(all_users,all_books,new_students,new_professors,logged_user.username,user_id);
                 all_users = lib.all_users;
                 all_books = lib.all_books;
-                all_users.save_data();
-                all_books.save_data();
             }
-            
+            else if(logged_user.label==1){
+                // cout<<"here"<<endl;
+                student_login_state(user_id,logged_user.username,logged_user.password,logged_user.name,all_books,all_users,31032022);
+            }
+            else if(logged_user.label==2){
+                prof_login_state(user_id,logged_user.username,logged_user.password,logged_user.name,all_books,all_users,31032022);
+            }
+            all_users.save_data();
+            all_books.save_data();
         }
         else if(command=="register"){
             struct USER new_user = register_new();
