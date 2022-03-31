@@ -28,6 +28,7 @@ int prof_student::calculate_fine(int curr_date){
     int fine_amount = 0;
     
     for (int i = 0; i < this->issued_books.size(); i++){
+        // cout<<num_days(this->issued_books[i].last_issue_date, curr_date)<<endl;
         if(num_days(this->issued_books[i].last_issue_date, curr_date) > this->max_days){
             fine_amount += this->fine_per_day*(num_days(this->issued_books[i].last_issue_date, curr_date) - this->max_days);
         }
@@ -46,9 +47,9 @@ bool prof_student::setlle_fine(){
     }
 }
 
-bool prof_student::return_book(string title, string author,int curr_date){
+bool prof_student::return_book(int book_id,int curr_date){
     for (int i = 0; i < this->issued_books.size(); i++){
-        if (this->issued_books[i].title == title && this->issued_books[i].author == author){
+        if (this->issued_books[i].book_id == book_id){
             this->issued_books.erase(this->issued_books.begin() + i);
             
             // settle fine

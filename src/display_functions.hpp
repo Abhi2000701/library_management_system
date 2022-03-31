@@ -58,7 +58,7 @@ void book_availiabilty(string username,book_database &all_books, user_database &
 }
 
 
-void issue_book(string username,int user_id,book_database &all_books, user_database &all_users,int curr_date){
+void issue_book(string username,int user_id,book_database &all_books, user_database &all_users,int curr_date, prof_student &user_ps){
     cout<<username<<"/ >";
     cout<<"Book ID: ";
     int book_id;
@@ -78,6 +78,7 @@ void issue_book(string username,int user_id,book_database &all_books, user_datab
             cout<<username<<"/ >";
             all_books.issue_book(book_id,user_id,curr_date);
             cout<<"Book issued.\n";
+            user_ps.issued_books.push_back(all_books.search_book_by_id(book_id));
         }
         else{
             cout<<username<<"/ >";
@@ -92,8 +93,19 @@ void issue_book(string username,int user_id,book_database &all_books, user_datab
 
 void display_books(vector<book> books){
     cout<<books.size()<<"books found"<<endl;
+    string status;
+    int date;
     for(int i=0;i<books.size();i++){
-        cout<<"BOOK ID: "<<books[i].book_id<<", TITLE: "<<books[i].title<<", AUTHOR: "<<books[i].author<<endl;
+        if(books[i].is_available()){
+            status = "Available";
+        }
+        else{
+            status = "Not Available";
+        }
+        cout<<"BOOK ID: "<<books[i].book_id<<", TITLE: "<<books[i].title<<", AUTHOR: "<<books[i].author<<", STATUS: "<<status<<", ISSUED ON: ";
+        date = books[i].last_issue_date;
+        display_date(date);
+        cout<<endl;
     }
 }
 
@@ -135,6 +147,7 @@ void print_help_non_lib(){
     cout<<"show_total_fine- show the total fine of the user"<<endl;
     cout<<"check_book_avail- check if a book is available"<<endl;
     cout<<"issue_book- issue a book"<<endl;
+    cout<<"return_book- return a book"<<endl;
 }
 
 #endif

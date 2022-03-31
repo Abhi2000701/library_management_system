@@ -7,12 +7,14 @@
 #include<prof_student.h>
 #include<student.h>
 #include"display_functions.hpp"
+#include<helper_functions.h>
 
 
 #define MAX_PROF_DAYS 60
 #define MAX_STUD_DAYS 30
 #define PROF_FINE_PER_DAY 5
 #define STUD_FINE_PER_DAY 2
+#define STUD_MAX_BOOKS 5
 
 using namespace std;
 
@@ -23,10 +25,12 @@ struct USER{
     int label;
 };
 void print_help(){
-
+    cout<<">";
+    cout<<"help- prints this help message"<<endl;
+    cout<<"exit- exits the program"<<endl;
+    cout<<"login- login to library"<<endl;
+    cout<<"register- register in library"<<endl;
 }
-
-
 
 int login_state(user_database &all_users){
     string command=".";
@@ -314,9 +318,32 @@ void user_ps_login_state(int user_id, string username, string password, string n
             book_availiabilty(username,all_books,all_users);
         }
         else if(command=="issue_book"){
-            issue_book(username,user_id, all_books,all_users,curr_date);
+            if(label==1 && user_ps.issued_books.size()>=STUD_MAX_BOOKS){
+                cout<<username<<"/ >";
+                cout<<"You have already issued "<<STUD_MAX_BOOKS<<" books.\n";
+                cout<<"You can't issue more books.\n";
+                continue;
+            }
+            issue_book(username,user_id, all_books,all_users,curr_date,user_ps);
         }
-
+        else if(command=="return_book"){
+            cout<<username<<"/ >";
+            cout<<"Book ID: ";
+            int book_id;
+            cin>>book_id;
+            if(cin.fail()){
+                invalid_dtype();
+                continue;
+            }
+            user_ps.return_book(book_id,curr_date);
+            for(int i=0;i<all_books.books.size();i++){
+                if(all_books.books[i].book_id==book_id){
+                    all_books.books[i].issued_to = 0;
+                    all_books.books[i].last_issue_date = 0;
+                    break;
+                }
+            }
+        }
         else{
             cout<<username<<"/ >";
             cout<<"Invalid command.\n";
@@ -427,12 +454,12 @@ int main(){
                 all_users = lib.all_users;
                 all_books = lib.all_books;
             }
-            else if(logged_user.label==1){
-                // cout<<"here"<<endl;
-                user_ps_login_state(user_id,logged_user.username,logged_user.password,logged_user.name,all_books,all_users,31032022,MAX_PROF_DAYS,PROF_FINE_PER_DAY,1);
-            }
             else if(logged_user.label==2){
-                user_ps_login_state(user_id,logged_user.username,logged_user.password,logged_user.name,all_books,all_users,31032022,MAX_STUD_DAYS,STUD_FINE_PER_DAY,2);
+                // cout<<"here"<<endl;
+                user_ps_login_state(user_id,logged_user.username,logged_user.password,logged_user.name,all_books,all_users,get_todays_date(),MAX_PROF_DAYS,PROF_FINE_PER_DAY,2);
+            }
+            else if(logged_user.label==1){
+                user_ps_login_state(user_id,logged_user.username,logged_user.password,logged_user.name,all_books,all_users,get_todays_date(),MAX_STUD_DAYS,STUD_FINE_PER_DAY,1);
             }
             all_users.save_data();
             all_books.save_data();

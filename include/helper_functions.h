@@ -13,4 +13,6 @@ int num_days(int date1, int date2);
 
 int add_days_to_date(int date, int days);
 
+bool date_valid(int date);
+
 #endif

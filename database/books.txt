@@ -1,5 +1,6 @@
 2,software devlopment,Indranil Saha,3,31032022
-3,computer organization,unknown,6,31032022
 4,Harry Potter,JK Rowling,5,31032022
-5,Game of thrones,eorge RR Martin,6,31032022
+5,Game of thrones,George RR Martin,6,31032022
 6,concepts of physics,HC Verma,6,31032022
+7,Computer Organization,DA Paterson,5,31032022
+8,Maths for JEE,KD Joshi,0,0
