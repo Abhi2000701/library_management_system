@@ -22,6 +22,7 @@ CMakeFiles/main.dir/src/librarian.cpp.o: ../src/librarian.cpp
 
 CMakeFiles/main.dir/src/main.cpp.o: ../include/book.h
 CMakeFiles/main.dir/src/main.cpp.o: ../include/book_database.h
+CMakeFiles/main.dir/src/main.cpp.o: ../include/helper_functions.h
 CMakeFiles/main.dir/src/main.cpp.o: ../include/librarian.h
 CMakeFiles/main.dir/src/main.cpp.o: ../include/prof_student.h
 CMakeFiles/main.dir/src/main.cpp.o: ../include/student.h

@@ -24,6 +24,14 @@ vector
 book.h
 ../include/book.h
 
+../include/helper_functions.h
+iostream
+-
+string
+-
+vector
+-
+
 ../include/librarian.h
 iostream
 -
@@ -121,4 +129,6 @@ student.h
 -
 display_functions.hpp
 /home/sahil/myfiles/iitk_acads/cs253/assignment_1/src/display_functions.hpp
+helper_functions.h
+-
 

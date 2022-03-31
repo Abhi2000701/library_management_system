@@ -10,11 +10,11 @@
 #include<helper_functions.h>
 
 
-#define MAX_PROF_DAYS 60
-#define MAX_STUD_DAYS 30
-#define PROF_FINE_PER_DAY 5
-#define STUD_FINE_PER_DAY 2
-#define STUD_MAX_BOOKS 5
+#define CONFIG_FILE "../config.txt"
+#define BOOKS_DB "../database/books.txt"
+#define USERS_DB "../database/users.txt"
+
+// int stud_max_book;
 
 using namespace std;
 
@@ -283,7 +283,7 @@ librarian log_in_lib(user_database &all_users, book_database &all_books, vector<
     return libr;
 }
 
-void user_ps_login_state(int user_id, string username, string password, string name, book_database &all_books,user_database &all_users,int curr_date,int max_days,int fine_per_day,int label){
+void user_ps_login_state(int user_id, string username, string password, string name, book_database &all_books,user_database &all_users,int curr_date,int max_days,int fine_per_day,int label, int stud_max_book){
     prof_student user_ps(user_id,username,password,name,all_books,max_days,fine_per_day,label);
     string command;
     while(true){
@@ -318,9 +318,9 @@ void user_ps_login_state(int user_id, string username, string password, string n
             book_availiabilty(username,all_books,all_users);
         }
         else if(command=="issue_book"){
-            if(label==1 && user_ps.issued_books.size()>=STUD_MAX_BOOKS){
+            if(label==1 && user_ps.issued_books.size()>=stud_max_book){
                 cout<<username<<"/ >";
-                cout<<"You have already issued "<<STUD_MAX_BOOKS<<" books.\n";
+                cout<<"You have already issued "<<stud_max_book<<" books.\n";
                 cout<<"You can't issue more books.\n";
                 continue;
             }
@@ -417,6 +417,16 @@ struct USER register_new(){
     return new_user;
 }
 
+int get_todays_date(){
+    time_t t=time(0);
+    tm* now = localtime(&t);
+    int year = now->tm_year + 1900;
+    int month = now->tm_mon + 1;
+    int day = now->tm_mday;
+    int date = day*1000000 + month*10000 + year;
+    return date;
+}
+
 int main(){
 
     string inp_username="libr", inp_password="library_p", command;
@@ -426,15 +436,35 @@ int main(){
     cout<<"Welcome to PK Kelkar Library."<<endl;
     cout<<"Initialising database...";
 
-    user_database all_users("../database/users.txt");
-    book_database all_books("../database/books.txt");
+    user_database all_users(USERS_DB);
+    book_database all_books(BOOKS_DB);
 
     cout<<" Done."<<endl;
     
     cout<<"You can use the \"help\" command to get a list of general commands.\n";
 
-
+    // load configuration parameters.
+    ifstream config(CONFIG_FILE);
+    string line;
+    int max_days_stud=0;
+    int max_days_prof=0, fine_per_day_stud=0, fine_per_day_prof=0;
+    int stud_max_book=5;
+    while(getline(config, line)){
+        vector<string> book_info = split_str_custom(line, ':');
+        if(book_info[0]=="max_days_stud")
+            max_days_stud = stoi(book_info[1]);
+        if(book_info[0]=="max_days_prof")
+            max_days_prof = stoi(book_info[1]);
+        if(book_info[0]=="fine_per_day_stud")
+            fine_per_day_stud = stoi(book_info[1]);
+        if(book_info[0]=="fine_per_day_prof")
+            fine_per_day_prof = stoi(book_info[1]);
+        if(book_info[0]=="stud_max_book")
+            stud_max_book = stoi(book_info[1]);
+    }
+    int curr_date = get_todays_date();
     while(true){
+        
         cout<<">";
         cin>>command;
         if(command=="exit")
@@ -456,10 +486,10 @@ int main(){
             }
             else if(logged_user.label==2){
                 // cout<<"here"<<endl;
-                user_ps_login_state(user_id,logged_user.username,logged_user.password,logged_user.name,all_books,all_users,get_todays_date(),MAX_PROF_DAYS,PROF_FINE_PER_DAY,2);
+                user_ps_login_state(user_id,logged_user.username,logged_user.password,logged_user.name,all_books,all_users,curr_date,max_days_prof,fine_per_day_prof,2,stud_max_book);
             }
             else if(logged_user.label==1){
-                user_ps_login_state(user_id,logged_user.username,logged_user.password,logged_user.name,all_books,all_users,get_todays_date(),MAX_STUD_DAYS,STUD_FINE_PER_DAY,1);
+                user_ps_login_state(user_id,logged_user.username,logged_user.password,logged_user.name,all_books,all_users,curr_date,max_days_stud,fine_per_day_stud,1,stud_max_book);
             }
             all_users.save_data();
             all_books.save_data();
@@ -469,11 +499,11 @@ int main(){
             if(new_user.label==-1)
                 continue;
             if(new_user.label==2){
-                prof_student new_user_cls(all_users.users.back().user_id+1+new_users.size(),new_user.username,new_user.password,new_user.name,all_books,MAX_PROF_DAYS,PROF_FINE_PER_DAY,new_user.label);
+                prof_student new_user_cls(all_users.users.back().user_id+1+new_users.size(),new_user.username,new_user.password,new_user.name,all_books,max_days_prof,fine_per_day_prof,new_user.label);
                 new_users.push_back(new_user_cls);
             }
             else if(new_user.label==1){
-                prof_student new_user_cls(all_users.users.back().user_id+1+new_users.size(),new_user.username,new_user.password,new_user.name,all_books,MAX_STUD_DAYS,STUD_FINE_PER_DAY,new_user.label);
+                prof_student new_user_cls(all_users.users.back().user_id+1+new_users.size(),new_user.username,new_user.password,new_user.name,all_books,max_days_stud,fine_per_day_stud,new_user.label);
                 new_users.push_back(new_user_cls);
             }
             

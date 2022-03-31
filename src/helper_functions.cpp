@@ -128,12 +128,12 @@ int add_days_to_date(int date, int days){
     return new_date;
 }
 
-int get_todays_date(){
-    time_t t=time(0);
-    tm* now = localtime(&t);
-    int year = now->tm_year + 1900;
-    int month = now->tm_mon + 1;
-    int day = now->tm_mday;
-    int date = day*1000000 + month*10000 + year;
-    return date;
-}
+// int get_todays_date(){
+//     time_t t=time(0);
+//     tm* now = localtime(&t);
+//     int year = now->tm_year + 1900;
+//     int month = now->tm_mon + 1;
+//     int day = now->tm_mday;
+//     int date = day*1000000 + month*10000 + year;
+//     return date;
+// }
