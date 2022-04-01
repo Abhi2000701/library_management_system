@@ -16,11 +16,13 @@ class book{
         // string publisher;
         int issued_to;
         int last_issue_date;
+        int isbn;
+        string publication;
         
         // default constructor
         book();
 
-        book(int book_id, string title, string author, int issued_to, int last_issue_date);
+        book(int book_id, string title, string author,int isbn, string publication, int issued_to, int last_issue_date);
         
         int due_date(int label_issuer);
         

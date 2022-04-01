@@ -23,10 +23,10 @@ class book_database{
         book_database(string book_txt_file);
         // ~book_database();
 
-        void add_book(string title, string author);
+        void add_book(string title, string author, int isbn, string pub);
         void delete_book(int book_id);
 
-        // field = (0,1)=(title, author)
+        // field = (0,1,2)=(title, author, publication)
         void update_book(int book_id, int field_to_update, string new_value);
 
         void issue_book(int book_id, int student_id, int date);

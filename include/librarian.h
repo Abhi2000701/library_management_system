@@ -29,7 +29,7 @@ class librarian:public user{
         
         vector<user> list_users();
 
-        void add_book(string title, string author);
+        void add_book(string title, string author,int isbn,string pub);
 
         void delete_book(int book_id);
 

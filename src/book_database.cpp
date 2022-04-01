@@ -29,7 +29,7 @@ book_database::book_database(string book_txt_file){
     num_books = 0;
     while(getline(book_file, line)){
         vector<string> book_info = split_str_custom(line, ',');
-        book new_book(stoi(book_info[0]), book_info[1], book_info[2], stoi(book_info[3]), stoi(book_info[4]));
+        book new_book(stoi(book_info[0]), book_info[1], book_info[2], stoi(book_info[3]), book_info[4], stoi(book_info[5]), stoi(book_info[6]));
         books.push_back(new_book);
         
     }
@@ -37,9 +37,9 @@ book_database::book_database(string book_txt_file){
 }
 
 
-void book_database::add_book(string title, string author){
+void book_database::add_book(string title, string author,int isbn, string pub){
     
-    book new_book(books.back().book_id+1, title, author, 0, 0);
+    book new_book(books.back().book_id+1, title, author, isbn, pub, 0, 0);
     books.push_back(new_book);
     num_books++;
 }
@@ -64,6 +64,9 @@ void book_database::update_book(int book_id, int field_to_update, string new_val
             }
             else if(field_to_update == 1){
                 books[i].author = new_value;
+            }
+            else if(field_to_update == 2){
+                books[i].publication = new_value;
             }
             break;
         }
@@ -126,7 +129,7 @@ book book_database::search_book_by_id(int book_id){
 void book_database::save_data(){
     ofstream book_file(file_name);
     for(int i=0;i<num_books;i++){
-        book_file << books[i].book_id << "," << books[i].title << "," << books[i].author << "," << books[i].issued_to << "," << books[i].last_issue_date << endl;
+        book_file << books[i].book_id << "," << books[i].title << "," << books[i].author << "," << books[i].isbn<<","<< books[i].publication<<","<< books[i].issued_to << "," << books[i].last_issue_date << endl;
     }
     book_file.close();
 }

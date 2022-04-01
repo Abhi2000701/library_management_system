@@ -19,12 +19,14 @@ book::book(){
     last_issue_date = 0;
 }
 
-book::book(int book_id, string title, string author, int issued_to, int last_issue_date) {
+book::book(int book_id, string title, string author,int isbn, string publication, int issued_to, int last_issue_date) {
     this->book_id = book_id;
     this->title = title;
     this->author = author;
     this->issued_to = issued_to;
     this->last_issue_date = last_issue_date;
+    this->isbn = isbn;
+    this->publication = publication;
 }
 
 int book::due_date(int label_issuer){

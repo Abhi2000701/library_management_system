@@ -35,8 +35,8 @@ void librarian::update_user(int user_id, int field_to_update, string new_value){
     this->all_users.update_user(user_id, field_to_update, new_value);
 }
 
-void librarian::add_book(string title, string author){
-    this->all_books.add_book(title, author);
+void librarian::add_book(string title, string author, int isbn, string pub){
+    this->all_books.add_book(title, author,isbn,pub);
 }
 
 void librarian::delete_book(int book_id){

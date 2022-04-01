@@ -81,6 +81,89 @@ int login_state(user_database &all_users){
 }
 
 
+struct USER register_new(user_database& all_users){
+    string command=".";
+    string name, password, username,role;
+    struct USER new_user;
+    bool register_success=false, valid_username=false;
+    while(true){
+        if(command=="exit")
+            break;
+        else if(command=="."){
+            cout<<"register/ >";
+            cout<<"Enter name: ";
+            cin.ignore();
+            getline(cin,name);
+            
+            do{
+                cout<<"register/ >";
+                cout<<"Enter username: ";
+                cin>>username;
+                valid_username = true;
+                for(int i=0;i<all_users.users.size();i++){
+                    if(username == all_users.users[i].username){
+                        valid_username = false;
+                        cout<<"This username already Exists!"<<endl;
+                        break;
+                    }
+                }
+            } while(!valid_username);
+
+            cout<<"register/ >";
+            cout<<"Enter password: ";
+            cin>>password;
+
+            do{
+                cout<<"register/ >";
+                cout<<"Enter role(student/professor/librarian): ";
+                cin>>role;
+                if(role=="librarian"){
+                    cout<<"Ask librarian to add you to the database.\n";
+                    register_success = true;
+                }
+                else if(role=="student"){
+                    new_user.label=1;
+                    register_success=true;
+                }
+                else if(role=="professor"){
+                    new_user.label=2;
+                    register_success=true;
+                }
+                else{
+                    cout<<"register/ >";
+                    cout<<"Invalid role.\n";
+                    register_success = false;
+                }
+            } while(! register_success);
+            
+            if(register_success){
+                cout<<"register/ >";
+                cout<<"User added. Ask librarian to register you\n";
+                new_user.name=name;
+                new_user.password=password;
+                new_user.username=username;
+                return new_user;
+            }
+        }
+        else if(command=="help"){
+            cout<<"register/ >"<<endl;
+            cout<<"help - print this help message"<<endl;
+            cout<<"exit - exit the register portal"<<endl;
+            cout<<". - register a new user"<<endl;
+        }
+        else{
+            cout<<"register/ >";
+            cout<<"Invalid command. use help command to see the list of commands.\n";
+        }
+        cout<<"register/ >";
+        cin>>command;
+    }
+
+    new_user.label = -1;
+    return new_user;
+}
+
+
 librarian log_in_lib(user_database &all_users, book_database &all_books, vector<prof_student> &new_users,string user_name,int libr_id){
     string command;
     librarian libr(all_users,all_books,libr_id);
@@ -142,7 +225,8 @@ librarian log_in_lib(user_database &all_users, book_database &all_books, vector<
             cout<<"list_users - list all users registered in the library"<<endl;
         }
         else if(command=="add_book"){
-            string title, author;
+            string title, author,pub;
+            int isbn;
             cout<<user_name<<"/ >";
             cout<<"Enter the title of the book: ";
             cin.ignore();
@@ -152,7 +236,21 @@ librarian log_in_lib(user_database &all_users, book_database &all_books, vector<
             cout<<"Enter the author of the book: ";
             cin.ignore(0);
             getline(cin,author);
-            libr.add_book(title,author);
+
+            cout<<user_name<<"/ >";
+            cout<<"Enter the publisher of the book: ";
+            cin.ignore(0);
+            getline(cin,pub);
+
+            cout<<user_name<<"/ >";
+            cout<<"Enter the isbn number of the book: ";
+            cin>>isbn;
+            if(cin.fail()){
+                invalid_dtype();
+                continue;
+            }
+
+            libr.add_book(title,author,isbn,pub);
         }
         else if(command=="delete_book"){
             cout<<user_name<<"/ >";
@@ -353,69 +451,6 @@ void user_ps_login_state(int user_id, string username, string password, string n
 }
 
 
-struct USER register_new(){
-    string command=".";
-    string name, password, username,role;
-    struct USER new_user;
-    bool register_success=false;
-    while(true){
-        if(command=="exit")
-            break;
-        else if(command=="."){
-            cout<<"register/ >";
-            cout<<"Enter name: ";
-            cin.ignore();
-            getline(cin,name);
-            cout<<"register/ >";
-            cout<<"Enter password: ";
-            cin>>password;
-            cout<<"register/ >";
-            cout<<"Enter username: ";
-            cin>>username;
-            cout<<"register/ >";
-            cout<<"Enter role: ";
-            cin>>role;
-            if(role=="librarian"){
-                cout<<"Ask librarian to add you to the database.\n";
-            }
-            else if(role=="student"){
-                new_user.label=1;
-                register_success=true;
-            }
-            else if(role=="professor"){
-                new_user.label=2;
-                register_success=true;
-            }
-            else{
-                cout<<"register/ >";
-                cout<<"Invalid role.\n";
-            }
-            if(register_success){
-                cout<<"register/ >";
-                cout<<"User added. Ask librarian to register you\n";
-                new_user.name=name;
-                new_user.password=password;
-                new_user.username=username;
-                return new_user;
-            }
-        }
-        else if(command=="help"){
-            cout<<"register/ >"<<endl;
-            cout<<"help - print this help message"<<endl;
-            cout<<"exit - exit the register portal"<<endl;
-            cout<<". - register a new user"<<endl;
-        }
-        else{
-            cout<<"register/ >";
-            cout<<"Invalid command. use help command to see the list of commands.\n";
-        }
-        cout<<"register/ >";
-        cin>>command;
-    }
-
-    new_user.label = -1;
-    return new_user;
-}
 
 int get_todays_date(){
     time_t t=time(0);
@@ -495,7 +530,7 @@ int main(){
             all_books.save_data();
         }
         else if(command=="register"){
-            struct USER new_user = register_new();
+            struct USER new_user = register_new(all_users);
             if(new_user.label==-1)
                 continue;
             if(new_user.label==2){
