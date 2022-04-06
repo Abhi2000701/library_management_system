@@ -3,6 +3,7 @@
 #include<vector>
 #include<fstream>
 #include<cassert>
+#include<bits/stdc++.h>
 
 
 #include"../include/helper_functions.h"
@@ -85,9 +86,14 @@ void book_database::issue_book(int book_id, int student_id, int date){
 }
 
 vector<book> book_database::search_book_by_title(string title){
+    transform(title.begin(),title.end(),title.begin(),::tolower);
     vector<book> result;
+    string temp;
     for(int i=0;i<num_books;i++){
-        if(books[i].title == title){
+        temp = books[i].title;
+        transform(temp.begin(), temp.end(),temp.begin(),::tolower);
+        // cout<<temp<<", "<<title<<endl;
+        if(temp == title){
             result.push_back(books[i]);
         }
     }
@@ -95,11 +101,15 @@ vector<book> book_database::search_book_by_title(string title){
 }
 
 vector<book> book_database::search_book_by_author(string author){
+    transform(author.begin(),author.end(),author.begin(),::tolower);
     vector<book> result;
+    string temp;
     // cout<<"here"<<num_books<<endl;
     for(int i=0;i<num_books;i++){
+        temp = books[i].author;
+        transform(temp.begin(), temp.end(),temp.begin(),::tolower);
         // cout<<books[i].author<<endl;
-        if(books[i].author == author){
+        if(temp == author){
             result.push_back(books[i]);
         }
     }
@@ -107,8 +117,19 @@ vector<book> book_database::search_book_by_author(string author){
 }
 
 book book_database::search_book(string title, string author){
+    transform(title.begin(),title.end(),title.begin(),::tolower);
+    transform(author.begin(),author.end(),author.begin(),::tolower);
+
+    string temp_auth,temp_title;
+
     for(int i=0;i<num_books;i++){
-        if(books[i].title == title && books[i].author == author){
+        temp_auth = books[i].author;
+        temp_title = books[i].title;
+
+        transform(temp_auth.begin(), temp_auth.end(),temp_auth.begin(),::tolower);
+        transform(temp_title.begin(),temp_title.end(),temp_title.begin(),::tolower);
+
+        if(temp_title == title && temp_auth == author){
             return books[i];
         }
     }

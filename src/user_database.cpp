@@ -3,6 +3,7 @@
 #include<vector>
 #include<fstream>
 #include<cassert>
+#include<bits/stdc++.h>
 
 #include"../include/user_database.h"
 #include"../include/helper_functions.h"
@@ -93,9 +94,14 @@ void user_database::update_user(int user_id, int field_to_update, string new_val
 }
 
 vector<user> user_database::search_user_by_name(string name){
+    transform(name.begin(),name.end(),name.begin(),::tolower);
+    string temp;
     vector<user> found_users;
     for(int i=0; i<users.size(); i++){
-        if(users[i].name==name){
+        temp = users[i].name;
+        transform(temp.begin(),temp.end(),temp.begin(),::tolower);
+        // cout<<temp<<", "<<name<<endl;
+        if(temp==name){
             found_users.push_back(users[i]);
         }
     }
