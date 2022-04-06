@@ -30,6 +30,7 @@ int prof_student::calculate_fine(int curr_date){
     for (int i = 0; i < this->issued_books.size(); i++){
         // cout<<num_days(this->issued_books[i].last_issue_date, curr_date)<<endl;
         if(num_days(this->issued_books[i].last_issue_date, curr_date) > this->max_days){
+            // cout<<num_days(this->issued_books[i].last_issue_date, curr_date) - this->max_days<<" "<<this->fine_per_day<<endl;
             fine_amount += this->fine_per_day*(num_days(this->issued_books[i].last_issue_date, curr_date) - this->max_days);
         }
     }

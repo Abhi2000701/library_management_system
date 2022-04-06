@@ -10,7 +10,7 @@
 #include<helper_functions.h>
 
 
-#define CONFIG_FILE "../config.txt"
+#define CONFIG_FILE "../config.yaml"
 #define BOOKS_DB "../database/books.txt"
 #define USERS_DB "../database/users.txt"
 
@@ -347,13 +347,13 @@ librarian log_in_lib(user_database &all_users, book_database &all_books, vector<
             cin.ignore();
             getline(cin,new_value);
             if(field=="name"){
-                libr.update_user(user_id,0,new_value);
+                libr.update_user(user_id,2,new_value);
             }
             else if(field=="password"){
                 libr.update_user(user_id,1,new_value);
             }
             else if(field=="username"){
-                libr.update_user(user_id,2,new_value);
+                libr.update_user(user_id,0,new_value);
             }
             else{
                 cout<<user_name<<"/ >";
@@ -485,18 +485,22 @@ int main(){
     int max_days_prof=0, fine_per_day_stud=0, fine_per_day_prof=0;
     int stud_max_book=5;
     while(getline(config, line)){
+        // cout<<line<<endl;
         vector<string> book_info = split_str_custom(line, ':');
         if(book_info[0]=="max_days_stud")
             max_days_stud = stoi(book_info[1]);
         if(book_info[0]=="max_days_prof")
             max_days_prof = stoi(book_info[1]);
-        if(book_info[0]=="fine_per_day_stud")
+        if(book_info[0]=="fine_per_day_stud"){
+            // cout<<"here"<<endl;
             fine_per_day_stud = stoi(book_info[1]);
+        }
         if(book_info[0]=="fine_per_day_prof")
             fine_per_day_prof = stoi(book_info[1]);
         if(book_info[0]=="stud_max_book")
             stud_max_book = stoi(book_info[1]);
     }
+    // cout<<fine_per_day_stud<<endl;
     int curr_date = get_todays_date();
     while(true){
         
