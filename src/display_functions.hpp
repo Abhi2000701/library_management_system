@@ -92,7 +92,7 @@ void issue_book(string username,int user_id,book_database &all_books, user_datab
 
 
 void display_books(vector<book> books){
-    cout<<books.size()<<"books found"<<endl;
+    cout<<books.size()<<" books found"<<endl;
     string status;
     int date;
     for(int i=0;i<books.size();i++){
@@ -100,7 +100,7 @@ void display_books(vector<book> books){
             status = "Available";
         }
         else{
-            status = "Not Available";
+            status = "Issued";
         }
         cout<<"BOOK ID: "<<books[i].book_id<<", TITLE: "<<books[i].title<<", AUTHOR: "<<books[i].author<<", STATUS: "<<status<<", ISSUED ON: ";
         date = books[i].last_issue_date;
