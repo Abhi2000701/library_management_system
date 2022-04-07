@@ -2,6 +2,11 @@
 # CS253 Assignment-1
 -prof Indranil Saha
 
+**Submitted By-**
+
+Name- *Sahil Bansal* <br>
+Roll No.- *200836*
+
 Implement Library Management System in C++ language using Object-oriented programming concepts. Implement the system on command line interface.
 
 ## Code Stucture
@@ -79,18 +84,16 @@ This generates the makefile which can compile the code.
 make
 ```
 
-This generates the executable file.
-
-```
-./main
-```
-
+This generates the executable file "main".
 
 
 ## How to Run
+```
+./main
+```
 The code is run using the command line.
 
-Use the "help" command to see the list of availible commands.
+At any point in the program you can use the "help" command to see the list of availible commands.
 
 The UserName, Password of librarian are "pkkl1234" and "sharma2022" respectively.
 When librarian logins, the system firts display registration requests, and he/she can accept or reject them.
@@ -98,5 +101,5 @@ When librarian logins, the system firts display registration requests, and he/sh
 
 ## Additional features:
 - Case insensitive search.
-- Search by title, author.
+- Search a book by title, author.
 - Automatically generates todays date to calculate the fine.

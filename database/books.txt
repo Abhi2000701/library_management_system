@@ -6,3 +6,4 @@
 8,Maths for JEE,KD Joshi,45504,perkins,0,0
 9,Physics,Halliday & Resnick,12345,Wiley,10,15022022
 10,Organic Chemistry,Clayden,12349,petkins,5,6042022
+11,Calculus,Thomas,234568,Pearson,0,0

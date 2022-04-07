@@ -25,7 +25,7 @@ struct USER{
     int label;
 };
 void print_help(){
-    cout<<">";
+    // cout<<">";
     cout<<"help- prints this help message"<<endl;
     cout<<"exit- exits the program"<<endl;
     cout<<"login- login to library"<<endl;
@@ -56,14 +56,14 @@ int login_state(user_database &all_users){
 
             }
             else{
-                cout<<"login/ >";
+                cout<<"login/ >"<<endl;
                 cout<<"Welcome "<<logged_in.name<<endl;
                 cout<<"You are logged in as "<<roles[logged_in.label]<<endl;
                 return logged_in.user_id;
             }
         }
         else if(command=="help"){
-            cout<<"login/ >"<<endl;
+            // cout<<"login/ >"<<endl;
             cout<<"help - print this help message"<<endl;
             cout<<"exit - exit the login portal"<<endl;
             cout<<". - login to the system"<<endl;
@@ -146,7 +146,7 @@ struct USER register_new(user_database& all_users){
             }
         }
         else if(command=="help"){
-            cout<<"register/ >"<<endl;
+            // cout<<"register/ >"<<endl;
             cout<<"help - print this help message"<<endl;
             cout<<"exit - exit the register portal"<<endl;
             cout<<". - register a new user"<<endl;
@@ -155,7 +155,7 @@ struct USER register_new(user_database& all_users){
             cout<<"register/ >";
             cout<<"Invalid command. use help command to see the list of commands.\n";
         }
-        cout<<"register/ >";
+        cout<<"\nregister/ >";
         cin>>command;
     }
 
@@ -203,7 +203,7 @@ librarian log_in_lib(user_database &all_users, book_database &all_books, vector<
     }
 
     while(true){
-        cout<<user_name<<"/ >";
+        cout<<"\n"<<user_name<<"/ >";
         cin>>command;
         if(command=="logout"){
             break;
@@ -385,7 +385,7 @@ void user_ps_login_state(int user_id, string username, string password, string n
     prof_student user_ps(user_id,username,password,name,all_books,max_days,fine_per_day,label);
     string command;
     while(true){
-        cout<<username<<"/ >";
+        cout<<"\n"<<username<<"/ >";
         cin>>command;
         if(command=="logout"){
             break;
@@ -546,6 +546,9 @@ int main(){
                 new_users.push_back(new_user_cls);
             }
             
+        }
+        else{
+            cout<<"Invalid command. Use the \"help\" command to get a list of avaliable commands."<<endl;
         }
     }
 }

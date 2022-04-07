@@ -1,8 +1,8 @@
 3,indsaha,pswd2,Indranil,2
 4,pkkl1234,sharma2022,Sharma JI,0
 5,sahilb20,sahilbb,Sahil Bansal,1
-6,parthm20,partm,Parth,1
-7,abiyan,abhi,abhiyanshu,1
+6,partman,partm,Parth,1
 8,ravi20,ravipswd,ravi,2
-9,vrinda1234,1234abcd,Vrinda,1
 10,man_ag,man1234,Manindra,2
+11,harpot,har1234,Harry,1
+12,hcviitk,hcv4321,HC Verma,2
