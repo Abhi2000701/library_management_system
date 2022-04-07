@@ -9,6 +9,8 @@ Roll No.- *200836*
 
 Implement Library Management System in C++ language using Object-oriented programming concepts. Implement the system on command line interface.
 
+View code on **github**:- https://github.com/sahilb2002/library_management_system 
+
 ## Code Stucture
 - The <a href="include/">include</a> folder contains all the header files, which contains different classes and functions.
 
@@ -69,7 +71,11 @@ I have made a single class for professor and student, because they have same fun
 
 
 
-## How to compile
+## Setup
+
+```
+git clone https://github.com/sahilb2002/library_management_system.git
+```
 I have used cmake to build the code.
 
 ```
